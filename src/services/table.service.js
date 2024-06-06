@@ -15,4 +15,50 @@ export default class TableService {
       throw new ApiError(error.status, error.message);
     }
   }
+
+  async getAll() {
+    try {
+      return this.prismaService.table.findMany();
+    } catch (error) {
+      throw new ApiError(error.status, error.message);
+    }
+  }
+
+  async getOne(id) {
+    try {
+      return this.prismaService.table.findUnique({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new ApiError(error.status, error.message);
+    }
+  }
+
+  async update(id, data) {
+    console.log(id, data);
+    try {
+      return this.prismaService.table.update({
+        where: {
+          id,
+        },
+        data,
+      });
+    } catch (error) {
+      throw new ApiError(error.status, error.message);
+    }
+  }
+
+  async delete(id) {
+    try {
+      return this.prismaService.table.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new ApiError(error.status, error.message);
+    }
+  }
 }
