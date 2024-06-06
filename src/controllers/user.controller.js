@@ -37,6 +37,15 @@ class UserController {
         }
         res.status(200).json(user);
     }
+
+    async delete(req, res, next) {
+        try {
+            await this.userService.delete(req.params.id);
+        } catch (error) {
+            return next(new ApiError(error.status, error.message));
+        }
+        res.status(204).end();
+    }
 }
 
 export default new UserController();

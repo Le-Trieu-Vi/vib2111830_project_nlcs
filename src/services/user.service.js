@@ -33,4 +33,12 @@ export default class UserService{
     }
     return user;
   }
+
+  delete (id) {
+    return this.prismaService.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
