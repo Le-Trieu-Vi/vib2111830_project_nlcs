@@ -46,6 +46,16 @@ class UserController {
         }
         res.status(204).end();
     }
+
+    async update(req, res, next) {
+        let user;
+       try {
+        user = await this.userService.update(req.params.id, req.body); 
+       } catch (error) {
+        return next(new ApiError(error.status, error.message));
+       }
+         res.status(200).json(user);
+    }
 }
 
 export default new UserController();

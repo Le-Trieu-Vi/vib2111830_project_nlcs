@@ -41,4 +41,17 @@ export default class UserService{
       },
     });
   }
+
+  update (id, data) {
+    try {
+      return this.prismaService.user.update({
+        where: {
+          id,
+        },
+        data,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

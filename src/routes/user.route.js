@@ -11,7 +11,7 @@ userRouter.route('/')
 
 userRouter.route('/:id')
        .get(authMiddleware.authorize(['admin']), userController.getOne)
-       // .put(authMiddleware.authorize(['admin']), userMiddleware.update, userController.update)
+       .put(authMiddleware.authorize(['admin']), userMiddleware.update, userController.update)
        .delete(authMiddleware.authorize(['admin']), userController.delete)
 
 export default userRouter;
