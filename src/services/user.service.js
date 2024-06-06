@@ -1,7 +1,7 @@
 import PrismaService from '../core/database.js';
 import * as bcrypt from 'bcrypt';
 
-export default class UserService {
+export default class UserService{
   constructor() {
     this.prismaService = new PrismaService();
   }
@@ -20,5 +20,17 @@ export default class UserService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async getOne(id) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 }

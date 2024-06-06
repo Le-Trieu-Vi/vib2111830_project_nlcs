@@ -7,7 +7,12 @@ const userRouter = Router();
 userRouter.use(authMiddleware.authenticate);
 userRouter.route('/')
        .post(authMiddleware.authorize(['admin']) ,userMiddleware.create, userController.create)
-       .get(userController.getAll)
+       .get(authMiddleware.authorize(['admin']), userController.getAll)
+
+userRouter.route('/:id')
+       .get(authMiddleware.authorize(['admin']), userController.getOne)
+       // .put(authMiddleware.authorize(['admin']), userMiddleware.update, userController.update)
+       // .delete(authMiddleware.authorize(['admin']), userController.delete)
 
 export default userRouter;
 

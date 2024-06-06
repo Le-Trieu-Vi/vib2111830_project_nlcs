@@ -27,6 +27,16 @@ class UserController {
         }
         res.status(200).json(users);
     }
+
+    async getOne(req, res, next) {
+        let user;
+        try {
+            user = await this.userService.getOne(req.params.id);
+        } catch (error) {
+            return next(new ApiError(error.status, error.message));
+        }
+        res.status(200).json(user);
+    }
 }
 
 export default new UserController();
