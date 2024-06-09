@@ -15,7 +15,7 @@ export default class AuthService {
       },
     });
     if (!user || await bcrypt.compare(data.password, user.password) === false) {
-      throw new ApiError(401, 'Username or password is incorrect');
+      next(new ApiError(401, 'Username or password is incorrect'));
     }
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: '1d',

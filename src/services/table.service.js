@@ -12,7 +12,7 @@ export default class TableService {
         data,
       });
     } catch (error) {
-      throw new ApiError(error.status, error.message);
+      next(new ApiError(500, 'Failed to create table'));
     }
   }
 
@@ -20,7 +20,7 @@ export default class TableService {
     try {
       return this.prismaService.table.findMany();
     } catch (error) {
-      throw new ApiError(error.status, error.message);
+      next(new ApiError(500, 'Failed to get tables'));
     }
   }
 
@@ -32,7 +32,7 @@ export default class TableService {
         },
       });
     } catch (error) {
-      throw new ApiError(error.status, error.message);
+      next(new ApiError(500, 'Failed to get table'));
     }
   }
 
@@ -46,7 +46,7 @@ export default class TableService {
         data,
       });
     } catch (error) {
-      throw new ApiError(error.status, error.message);
+      next(new ApiError(500, 'Failed to update table'));
     }
   }
 
@@ -58,7 +58,7 @@ export default class TableService {
         },
       });
     } catch (error) {
-      throw new ApiError(error.status, error.message);
+      next(new ApiError(500, 'Failed to delete table'));
     }
   }
 }

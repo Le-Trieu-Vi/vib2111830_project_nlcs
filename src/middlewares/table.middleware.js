@@ -3,14 +3,14 @@ import { ApiError } from './error.middleware.js';
 const createTableSchema = object({
     number: string().required(),
     status: string().oneOf(['available', 'unavailable']).required(),
-    });
+});
 export const create = async (req, res, next) => {
     try {
-        req.body = await createTableSchema.validate(req.body);
+        req.body = await createTableSchema.validate(req.body, { abortEarly: false });
+        next();
     } catch (error) {
-        return next(new ApiError(400, error.message));
+        return next(new ApiError(400, error.errors.join()));
     }
-    next();
 }
 
 const updateTableSchema = object({
@@ -20,9 +20,9 @@ const updateTableSchema = object({
 
 export const update = async (req, res, next) => {
     try {
-        req.body = await updateTableSchema.validate(req.body);
+        req.body = await updateTableSchema.validate(req.body, { abortEarly: false });
+        next();
     } catch (error) {
-        return next(new ApiError(400, error.message));
+        return next(new ApiError(400, error.errors.join()));
     }
-    next();
 }

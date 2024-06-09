@@ -9,53 +9,48 @@ class TableController {
     }
 
     async create(req, res, next) {
-        let table;
         try {
-            table = await this.tableService.create(req.body);
+            const table = await this.tableService.create(req.body);
+            res.status(200).json(table);
         } catch (error) {
-            return new ApiError(error.status, error.message);
+            next(new ApiError(error.status || 500, error.message || 'Failed to create table'));
         }
-        res.status(200).json(table);
     }
 
     async getAll(req, res, next) {
-        let tables;
         try {
-            tables = await this.tableService.getAll();
+            const tables = await this.tableService.getAll();
+            res.status(200).json(tables);
         } catch (error) {
-            return new ApiError(error.status, error.message);
+            next(new ApiError(error.status || 500, error.message || 'Failed to get tables'));
         }
-        res.status(200).json(tables);
     }
 
     async getOne(req, res, next) {
-        let table;
         try {
-            table = await this.tableService.getOne(req.params.id);
+            const table = await this.tableService.getOne(req.params.id);
+            res.status(200).json(table);
         } catch (error) {
-            return new ApiError(error.status, error.message);
+            next(new ApiError(error.status || 500, error.message || 'Failed to get table'));
         }
-        res.status(200).json(table);
     }
 
     async update(req, res, next) {
-        let table;
         try {
-            table = await this.tableService.update(req.params.id, req.body);
+            const table = await this.tableService.update(req.params.id, req.body);
+            res.status(200).json(table);
         } catch (error) {
-            return new ApiError(error.status, error.message);
+            next(new ApiError(error.status || 500, error.message || 'Failed to update table'));
         }
-        res.status(200).json(table);
     }
 
     async delete(req, res, next) {
-        let table;
         try {
-            table = await this.tableService.delete(req.params.id);
+            await this.tableService.delete(req.params.id);
+            res.status(200).json({ message: 'Table deleted successfully' });
         } catch (error) {
-            return new ApiError(error.status, error.message);
+            next(new ApiError(error.status || 500, error.message || 'Failed to delete table'));
         }
-        res.status(204).end();
     }
 }
 

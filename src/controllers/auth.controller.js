@@ -9,20 +9,19 @@ class AuthController {
     }
 
     async login(req, res, next) {
-        let accessToken;
         try {
-            accessToken = await this.authService.login(req.body);
+            const accessToken = await this.authService.login(req.body);
+            res.status(200).json({
+                status: "success",
+                message: "Login successfully",
+                data: {
+                    accessToken
+                }
+            });
         } catch (error) {
-            return next(new ApiError(error.status, error.message));
+            next(new ApiError(error.status || 500, error.message || "Failed to login"));
         }
-        res.status(200).json({
-            status: "success",
-            message: "Login successfully",
-            data: {
-                accessToken
-            }
-        });
+        
     }
 }
-
 export default new AuthController();

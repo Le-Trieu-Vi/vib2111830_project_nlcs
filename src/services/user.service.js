@@ -6,11 +6,15 @@ export default class UserService{
     this.prismaService = new PrismaService();
   }
 
-  getAll() {
-    return this.prismaService.user.findMany();
+  async getAll() {
+    try {
+      return this.prismaService.user.findMany();
+    } catch (error) {
+      next(new ApiError(500, 'Failed to get users'));
+    }
   }
 
-  create(data) {
+  async create(data) {
     try {
       const salt = bcrypt.genSaltSync(10);
       data.password = bcrypt.hashSync(data.password, salt);
@@ -18,31 +22,35 @@ export default class UserService{
         data,
       });
     } catch (error) {
-      throw error;
+      next(new ApiError(500, 'Failed to create user'));
     }
   }
 
   async getOne(id) {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
-    });
-    if (!user) {
-      throw new Error('User not found');
+    try {
+      return this.prismaService.user.findUnique({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      next(new ApiError(500, 'Failed to get user'));
     }
-    return user;
   }
 
-  delete (id) {
-    return this.prismaService.user.delete({
-      where: {
-        id,
-      },
-    });
+  async delete(id) {
+    try {
+      return this.prismaService.user.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      next(new ApiError(500, 'Failed to delete user'));
+    }
   }
 
-  update (id, data) {
+  async update (id, data) {
     try {
       return this.prismaService.user.update({
         where: {
@@ -51,7 +59,7 @@ export default class UserService{
         data,
       });
     } catch (error) {
-      throw error;
+      next(new ApiError(500, 'Failed to update user'));
     }
   }
 }
