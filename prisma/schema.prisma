@@ -24,6 +24,8 @@ model User {
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
 
+  orders    Order[]
+
   @@map("users")
 }
 
@@ -32,6 +34,8 @@ model Category {
   name      String    @unique @db.VarChar(100)
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
+
+  dishs     Dish[]
 
   @@map("categories")
 }
@@ -47,6 +51,11 @@ model Dish {
   deletedAt   DateTime?     @map("deleted_at")
   OrderDetail OrderDetail[]
   Price       Price[]
+
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String        @db.VarChar(36)
+
+  @@map("dishs")
 }
 
 model Price {
@@ -54,6 +63,7 @@ model Price {
   dishId  String @db.VarChar(36)
   price   Int
   updated_at DateTime @default(now()) @map("updated_at")
+  
   @@id([dishId])
 }
 
@@ -64,6 +74,14 @@ model Order {
   createdAt   DateTime      @default(now()) @map("created_at")
   deletedAt   DateTime?     @map("deleted_at")
   OrderDetail OrderDetail[]
+
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String        @db.VarChar(36)
+
+  table       Table         @relation(fields: [tableId], references: [id])
+  tableId     String        @db.VarChar(36)
+
+  @@map("orders")
 }
 
 model Table {
@@ -72,13 +90,19 @@ model Table {
   status    String    @db.VarChar(100)
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
+
+  orders    Order[]
+
+  @@map("tables")
 }
 
 model OrderDetail {
   order    Order  @relation(fields: [orderId], references: [id])
   orderId  String @db.VarChar(36)
+
   dish     Dish   @relation(fields: [dishId], references: [id])
   dishId   String @db.VarChar(36)
+
   quantity Int
 
   @@id([orderId, dishId])
