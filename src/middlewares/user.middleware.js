@@ -16,14 +16,14 @@ export const create = async (req, res, next) => {
     try {
         req.body = await createUserSchema.validate(req.body, { abortEarly: false });        
     } catch (error) {
-        return next(new ApiError(400, error.errors.join()));
+        return next(new ApiError(400, error.errors.join(', ')));
     }
     next();
 };
 
 const updateUserSchema = object({
   fullname: string(),
-  username: string().required(),
+  username: string(),
   address: string(),
   role: string().oneOf(['staff', 'admin']),
   phone: string().matches(
@@ -34,8 +34,8 @@ const updateUserSchema = object({
 export const update = async (req, res, next) => {
     try {
         req.body = await updateUserSchema.validate(req.body, { abortEarly: false });
+        next();
     } catch (error) {
-        return next(new ApiError(400, error.errors.join()));
+        return next(new ApiError(400, error.errors.join(', ')));
     }
-    next();
 }

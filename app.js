@@ -4,6 +4,7 @@ import userRouter from './src/routes/user.route.js';
 import authRouter from './src/routes/auth.route.js';
 import tableRouter from './src/routes/table.route.js';
 import categoryRouter from './src/routes/category.route.js';
+import dishRouter from './src/routes/dish.route.js';
 import { errorHandler } from './src/middlewares/error.middleware.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -24,6 +25,9 @@ app.use('/api/tables', tableRouter);
 
 // route category
 app.use('/api/categories', categoryRouter);
+
+// route dish
+app.use('/api/dishes', dishRouter);
 
 // error handler
 app.use(errorHandler);

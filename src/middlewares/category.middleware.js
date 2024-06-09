@@ -10,7 +10,7 @@ export const create = async (req, res, next) => {
         req.body = await createCategorySchema.validate(req.body, { abortEarly: false });
         next();
     } catch (error) {
-        return next(new ApiError(400, error.errors.join()));
+        return next(new ApiError(400, error.errors.join(', ')));
     }
 };
 
@@ -23,6 +23,6 @@ export const update = async (req, res, next) => {
         req.body = await updateCategorySchema.validate(req.body, { abortEarly: false });
         next();
     } catch (error) {
-        return next(new ApiError(400, error.errors.join()));
+        return next(new ApiError(400, error.errors.join(', ')));
     }
 }
