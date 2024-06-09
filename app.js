@@ -1,17 +1,17 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import viewEngine from './src/config/viewEngine.js';
 import userRouter from './src/routes/user.route.js';
 import authRouter from './src/routes/auth.route.js';
 import tableRouter from './src/routes/table.route.js';
-import errorController from './src/controllers/error.controller.js';
+import categoryRouter from './src/routes/category.route.js';
+import { errorHandler } from './src/middlewares/error.middleware.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // route user
 app.use('/api/users', userRouter);
@@ -22,8 +22,11 @@ app.use('/api/auth', authRouter);
 // route table
 app.use('/api/tables', tableRouter);
 
+// route category
+app.use('/api/categories', categoryRouter);
+
 // error handler
-app.use(errorController.handle);
+app.use(errorHandler);
 
 viewEngine(app);
 

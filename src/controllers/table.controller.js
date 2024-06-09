@@ -1,4 +1,4 @@
-import ApiError from "../api-error.js";
+import { ApiError } from "../middlewares/error.middleware.js";
 import TableService from "../services/table.service.js";
 import autoBind from "../utils/auto-bind.util.js";
 

@@ -1,5 +1,5 @@
 import { object, string } from 'yup';
-import ApiError from '../api-error.js';
+import { ApiError } from './error.middleware.js';
 import jwt from 'jsonwebtoken';
 
 const loginSchema = object({

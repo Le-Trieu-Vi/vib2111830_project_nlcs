@@ -1,5 +1,5 @@
 import autoBind from "../utils/auto-bind.util.js";
-import ApiError from "../api-error.js";
+import { ApiError } from "../middlewares/error.middleware.js";
 import AuthService from "../services/auth.service.js";
 
 class AuthController {

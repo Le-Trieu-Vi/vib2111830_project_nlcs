@@ -1,5 +1,5 @@
 import PrismaService from '../core/database.js';
-import ApiError from '../api-error.js';
+import { ApiError } from '../middlewares/error.middleware.js';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 

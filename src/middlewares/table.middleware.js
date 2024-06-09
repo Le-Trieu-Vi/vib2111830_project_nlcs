@@ -1,6 +1,5 @@
 import { object, string } from 'yup';
-import ApiError from '../api-error.js';
-
+import { ApiError } from './error.middleware.js';
 const createTableSchema = object({
     number: string().required(),
     status: string().oneOf(['available', 'unavailable']).required(),
