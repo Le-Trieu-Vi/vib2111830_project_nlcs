@@ -10,7 +10,7 @@ export default class UserService{
     try {
       return this.prismaService.user.findMany();
     } catch (error) {
-      next(new ApiError(500, 'Failed to get users'));
+      throw error;
     }
   }
 
@@ -22,7 +22,7 @@ export default class UserService{
         data,
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to create user'));
+      throw error;
     }
   }
 
@@ -34,7 +34,7 @@ export default class UserService{
         },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to get user'));
+      throw error;
     }
   }
 
@@ -46,7 +46,7 @@ export default class UserService{
         },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to delete user'));
+      throw error;
     }
   }
 
@@ -59,7 +59,7 @@ export default class UserService{
         data,
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to update user'));
+      throw error;
     }
   }
 }

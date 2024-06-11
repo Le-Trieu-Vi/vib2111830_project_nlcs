@@ -12,7 +12,7 @@ export default class CategoryService {
         data,
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to create category'));
+      throw error;
     }
   }
 
@@ -20,7 +20,7 @@ export default class CategoryService {
     try {
       return this.prismaService.category.findMany();
     } catch (error) {
-      next(new ApiError(500, 'Failed to get categories'));
+      throw error;
     }
   }
 
@@ -32,7 +32,7 @@ export default class CategoryService {
         },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to get category'));
+      throw error;
     }
   }
 
@@ -45,7 +45,7 @@ export default class CategoryService {
         data,
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to update category'));
+      throw error;
     }
   }
 
@@ -57,7 +57,7 @@ export default class CategoryService {
         },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to delete category'));
+      throw error;
     }
   }
 }
