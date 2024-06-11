@@ -1,5 +1,4 @@
 import PrismaService from '../core/database.js';
-import { ApiError } from '../middlewares/error.middleware.js';
 
 export default class TableService {
   constructor() {

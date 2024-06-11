@@ -1,4 +1,3 @@
-import e from 'express';
 import PrismaService from '../core/database.js';
 
 export default class DishService {
