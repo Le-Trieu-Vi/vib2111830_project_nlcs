@@ -1,5 +1,5 @@
+import e from 'express';
 import PrismaService from '../core/database.js';
-import { ApiError } from '../middlewares/error.middleware.js';
 
 export default class DishService {
   constructor() {
@@ -8,19 +8,36 @@ export default class DishService {
 
   async create(data) {
     try {
-      return this.prismaService.dish.create({
-        data,
+      return await this.prismaService.dish.create({
+        data: {
+          name: data.name,
+          categoryId: data.categoryId,
+          image: data.image,
+          description: data.description,
+          prices: {
+            create: {
+              price: data.price,
+            },
+          },
+        },
+        include: {
+          prices: true,
+        },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to create dish'));
+      throw error;
     }
   }
 
   async getAll() {
     try {
-      return this.prismaService.dish.findMany();
+      return this.prismaService.dish.findMany({
+        include: {
+          prices: { orderBy: { updatedAt: 'desc' }, take: 1 },
+        },
+      });
     } catch (error) {
-      next(new ApiError(500, 'Failed to get dishes'));
+      throw error;
     }
   }
 
@@ -30,22 +47,50 @@ export default class DishService {
         where: {
           id,
         },
+        include: {
+          prices: { orderBy: { updatedAt: 'desc' }, take: 1 },
+        },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to get dish'));
+      throw error;
     }
   }
 
   async update(id, data) {
     try {
-      return this.prismaService.dish.update({
-        where: {
-          id,
+      const currentDish = await this.prismaService.dish.findUnique({
+        where: { id },
+        include: { prices: { orderBy: { updatedAt: 'desc' }, take: 1 } },
+      });
+
+      if (!currentDish) {
+        throw new Error('Dish not found');
+      }
+
+      const currentPrice = currentDish.prices[0]?.price;
+      const updatePriceData = currentPrice !== data.price ? {
+        prices: {
+          create: {
+            price: data.price,
+          },
+        }
+      } : {};
+
+      return await this.prismaService.dish.update({
+        where: { id },
+        data: {
+          name: data.name,
+          categoryId: data.categoryId,
+          image: data.image,
+          description: data.description,
+          ...updatePriceData,
         },
-        data,
+        include: {
+          prices: true,
+        },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to update dish'));
+      throw error;
     }
   }
 
@@ -57,7 +102,7 @@ export default class DishService {
         },
       });
     } catch (error) {
-      next(new ApiError(500, 'Failed to delete dish'));
+      throw error;
     }
   }
 }
